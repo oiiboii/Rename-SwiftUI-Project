@@ -72,5 +72,15 @@ def copy_and_rename_project():
                     new_file_path = os.path.join(root, new_file_name)
                     os.rename(file_path, new_file_path)
                     print(f"Renamed {file_path} to {new_file_path}")
+                    
+    # Update project references in Xcode project file
+    xcodeproj_path = os.path.join(new_project_path, new_project_name + ".xcodeproj", "project.pbxproj")
+    with open(xcodeproj_path, "r") as f:
+        contents = f.read()
+        new_contents = contents.replace(old_project_name, new_project_name)
+        new_contents = new_contents.replace(old_project_name_formatted, new_project_name_formatted)
+    with open(xcodeproj_path, "w") as f:
+        f.write(new_contents)
+    print(f"Updated {xcodeproj_path}")
 
 copy_and_rename_project()
